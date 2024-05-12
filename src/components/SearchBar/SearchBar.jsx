@@ -4,15 +4,18 @@ import s from "./SearchBar.module.css";
 function SearchBar({ onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const form = e.target;
     const topic = form.elements.topic.value;
-console.log(topic);
+
     if (!topic.trim()) {
       return toast("Please enter something", {
         icon: "⚠️",
       });
     }
+
     onSubmit(topic);
+    
     form.reset();
   };
 
