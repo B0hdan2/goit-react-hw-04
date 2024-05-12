@@ -5,6 +5,7 @@ import requestToServer from "../photo-API";
 import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
+import toast, { Toaster } from "react-hot-toast";
 
 const App = () => {
   const [photos, setPhoto] = useState([]);
@@ -12,6 +13,7 @@ const App = () => {
   const [query, setQuery] = useState("");
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
+  const [reachedLastPage, setReachedLastPage] = useState(true);
 
   useEffect(() => {
     const getPhoto = async () => {
@@ -27,6 +29,13 @@ const App = () => {
         if (page >= total_pages) {
           return;
         }
+
+        if (page + 10 >= total_pages) {
+          setReachedLastPage(false);
+          toast("we showed everything we could", {
+            icon: "🐼",
+          });
+        }
       } catch (error) {
         setError(true);
       } finally {
@@ -40,6 +49,7 @@ const App = () => {
     setPhoto([]);
     setPage(0);
     setQuery("");
+    setReachedLastPage(true);
     setQuery(topic);
   };
 
@@ -53,7 +63,14 @@ const App = () => {
       {photos.length > 0 && <ImageGallery images={photos} />}
       {loader && <Loader />}
       {error && <ErrorMessage />}
-      {photos.length > 0 && <LoadMoreBtn photoMore={handleClick} />}
+      {reachedLastPage && photos.length > 0 && (
+        <LoadMoreBtn photoMore={handleClick} />
+      )}
+      <Toaster
+        position='top-right'
+        reverseOrder={false}
+        toastOptions={{ style: { background: "aqua", color: "#000" } }}
+      />
     </>
   );
 };

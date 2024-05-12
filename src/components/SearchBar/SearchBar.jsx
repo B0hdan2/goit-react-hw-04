@@ -15,7 +15,7 @@ function SearchBar({ onSubmit }) {
     }
 
     onSubmit(topic);
-    
+
     form.reset();
   };
 

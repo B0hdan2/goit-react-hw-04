@@ -14,7 +14,17 @@
     margin-right: 20px;
     border-radius: 5px;
     border: 1px solid white;
+    outline: none;
 
     background-color: black;
     color: white;
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.815);
+}
+
+.input:hover,
+.input:focus {
+    border: 1px solid aqua;
 }

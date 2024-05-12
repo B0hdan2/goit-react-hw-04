@@ -1,9 +1,10 @@
-import s from "./LoadMoreBtn.module.css"
-function LoadMoreBtn({photoMore}) {
-
+import s from "./LoadMoreBtn.module.css";
+function LoadMoreBtn({ photoMore }) {
   return (
     <div className={s.box}>
-      <button type='button'onClick={photoMore} >Load more</button>
+      <button type='button' onClick={photoMore}>
+        Load more
+      </button>
     </div>
   );
 }

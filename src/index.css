@@ -41,8 +41,10 @@ button {
   border: 1px solid white;
   cursor: pointer;
 }
+
 button:hover,
-button:hover:focus{
-background-color: aqua;
-color: black;
+button:hover:focus {
+  background-color: aqua;
+  border: 1px solid aqua;
+  color: black;
 }
