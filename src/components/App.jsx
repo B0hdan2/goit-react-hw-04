@@ -27,6 +27,7 @@ const App = () => {
           query !== ""
             ? await requestToServer({ page: page, query: query })
             : [];
+
         setPhoto((prev) => (query !== "" ? [...prev, ...results] : prev));
 
         if (page + 10 >= total_pages) {
