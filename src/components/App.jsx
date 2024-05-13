@@ -15,6 +15,9 @@ const App = () => {
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
   const [reachedLastPage, setReachedLastPage] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [contentModal, setContentModal] = useState(null);
+  
 
   useEffect(() => {
     const getPhoto = async () => {
@@ -45,7 +48,7 @@ const App = () => {
     getPhoto();
   }, [page, query]);
 
-  const search = (topic) => {
+  const handleSearch = (topic) => {
     if (query === topic) {
       return toast("you just found it", {
         icon: "🐼",
@@ -62,16 +65,29 @@ const App = () => {
     setPage((prev) => prev + 10);
   };
 
+  const handleOpenModal = ({ images }) => {
+    setContentModal(images);
+    setIsOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
+
   return (
     <>
-      <SearchBar onSubmit={search} />
-      {photos.length > 0 && <ImageGallery images={photos} />}
+      <SearchBar onSubmit={handleSearch} />
+      {photos.length > 0 && (
+        <ImageGallery images={photos} openModal={handleOpenModal} />
+      )}
       {loader && <Loader />}
       {error && <ErrorMessage />}
-      {reachedLastPage && photos.length > 0 && (
+      {!isOpen && reachedLastPage && photos.length > 0 && (
         <LoadMoreBtn photoMore={handleClick} />
       )}
-      <ImageModal {...photos} />
+      {isOpen && (
+        <ImageModal content={contentModal} onClose={handleCloseModal} />
+      )}
       <Toaster
         position='top-right'
         reverseOrder={false}
