@@ -13,7 +13,7 @@ function SearchBar({ onSubmit }) {
         icon: "⚠️",
       });
     }
- 
+
     onSubmit(topic);
 
     form.reset();

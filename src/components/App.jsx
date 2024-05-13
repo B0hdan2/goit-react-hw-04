@@ -17,7 +17,6 @@ const App = () => {
   const [reachedLastPage, setReachedLastPage] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [contentModal, setContentModal] = useState(null);
-  
 
   useEffect(() => {
     const getPhoto = async () => {
@@ -29,9 +28,6 @@ const App = () => {
             ? await requestToServer({ page: page, query: query })
             : [];
         setPhoto((prev) => (query !== "" ? [...prev, ...results] : prev));
-        if (page >= total_pages) {
-          return;
-        }
 
         if (page + 10 >= total_pages) {
           setReachedLastPage(false);
@@ -69,10 +65,10 @@ const App = () => {
     setContentModal(images);
     setIsOpen(true);
   };
+
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-
 
   return (
     <>
