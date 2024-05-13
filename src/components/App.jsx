@@ -28,9 +28,11 @@ const App = () => {
             ? await requestToServer({ page: page, query: query })
             : [];
 
-        setPhoto((prev) => (query !== "" ? [...prev, ...results] : prev));
+        setPhoto((prev) => (query !== "" ? [...prev, ...results] : []));
 
-        if (page + 10 >= total_pages) {
+        const lastPage = Math.ceil(total_pages / 10);
+
+        if (lastPage === page) {
           setReachedLastPage(false);
           toast("we showed everything we could", {
             icon: "🐼",
@@ -52,18 +54,21 @@ const App = () => {
       });
     }
     setPhoto([]);
-    setPage(0);
     setQuery("");
     setReachedLastPage(true);
     setQuery(topic);
+    if (photos.length === 0) {
+      return setPage(1);
+    }
+    setPage(0);
   };
 
   const handleClick = () => {
-    setPage((prev) => prev + 10);
+    setPage((prev) => prev + 1);
   };
 
-  const handleOpenModal = ({ images }) => {
-    setContentModal(images);
+  const handleOpenModal = ({ image }) => {
+    setContentModal(image);
     setIsOpen(true);
   };
 
@@ -83,7 +88,11 @@ const App = () => {
         <LoadMoreBtn photoMore={handleClick} />
       )}
       {isOpen && (
-        <ImageModal content={contentModal} onClose={handleCloseModal} />
+        <ImageModal
+          content={contentModal}
+          onClose={handleCloseModal}
+          isOpen={handleOpenModal}
+        />
       )}
       <Toaster
         position='top-right'

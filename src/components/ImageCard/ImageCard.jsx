@@ -1,13 +1,13 @@
 import s from "./ImageCard.module.css";
 
-function ImageCard({ images, openModal }) {
+function ImageCard({ image, openModal }) {
   return (
     <div>
       <img
         className={s.card_img}
-        onClick={() => openModal({ images })}
-        src={images.urls.small}
-        alt={images.alt_description}
+        onClick={() => openModal({ image })}
+        src={image.urls.small}
+        alt={image.alt_description}
       />
     </div>
   );

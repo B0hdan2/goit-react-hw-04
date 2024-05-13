@@ -6,7 +6,7 @@ function ImageGallery({ images, openModal }) {
     <ul className={s.list}>
       {images.map((image) => (
         <li className={s.item} key={image.id}>
-          <ImageCard images={image} openModal={openModal} />
+          <ImageCard image={image} openModal={openModal} />
         </li>
       ))}
     </ul>

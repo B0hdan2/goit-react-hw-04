@@ -3,8 +3,9 @@ import s from "./ImageModal.module.css";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { MdInfo } from "react-icons/md";
+import ReactModal from "react-modal";
 
-function ImageModal({ content, onClose }) {
+function ImageModal({ content, onClose, isOpen }) {
   const handleClose = (e) => {
     if (e.target.classList.contains(s.backdrop)) {
       onClose();
@@ -12,36 +13,43 @@ function ImageModal({ content, onClose }) {
   };
 
   useEffect(() => {
-    const handleOnEsc = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleOnEsc);
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
 
     return () => {
-      document.removeEventListener("keydown", handleOnEsc);
+      document.body.style.overflow = "auto";
     };
-  }, [onClose]);
+  }, [isOpen]);
 
   return (
-    <div className={s.backdrop} onClick={handleClose}>
-      <div className={s.modal}>
-        <img src={content.urls.regular} alt={content.alt_description} />
-        <div className={s.info_text}>
-          <span>
-            <FaHeart className={s.icon} /> {content.likes}
-          </span>
-          <p>
-            <FaUser className={s.icon} /> {content.user.name}
-          </p>
-          <p>
-            <MdInfo className={s.icon} /> {content.alt_description}
-          </p>
+    <ReactModal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      shouldCloseOnEsc={true}
+      overlayClassName={s.backdrop}
+      className={s.modal}
+      shouldCloseOnOverlayClick={true}
+    >
+      <div>
+        <div>
+          <img src={content.urls.regular} alt={content.alt_description} />
+          <div className={s.info_text}>
+            <span>
+              <FaHeart className={s.icon} /> {content.likes}
+            </span>
+            <p>
+              <FaUser className={s.icon} /> {content.user.name}
+            </p>
+            <p>
+              <MdInfo className={s.icon} /> {content.alt_description}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </ReactModal>
   );
 }
 
