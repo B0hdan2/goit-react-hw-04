@@ -6,6 +6,7 @@ import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import toast, { Toaster } from "react-hot-toast";
+import ImageModal from "./ImageModal/ImageModal";
 
 const App = () => {
   const [photos, setPhoto] = useState([]);
@@ -24,7 +25,6 @@ const App = () => {
           query !== ""
             ? await requestToServer({ page: page, query: query })
             : [];
-
         setPhoto((prev) => (query !== "" ? [...prev, ...results] : prev));
         if (page >= total_pages) {
           return;
@@ -46,6 +46,11 @@ const App = () => {
   }, [page, query]);
 
   const search = (topic) => {
+    if (query === topic) {
+      return toast("you just found it", {
+        icon: "🐼",
+      });
+    }
     setPhoto([]);
     setPage(0);
     setQuery("");
@@ -66,6 +71,7 @@ const App = () => {
       {reachedLastPage && photos.length > 0 && (
         <LoadMoreBtn photoMore={handleClick} />
       )}
+      <ImageModal {...photos} />
       <Toaster
         position='top-right'
         reverseOrder={false}
