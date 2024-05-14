@@ -9,7 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ImageModal from "./ImageModal/ImageModal";
 
 const App = () => {
-  const [photos, setPhoto] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [loader, setLoader] = useState(false);
@@ -19,20 +19,21 @@ const App = () => {
   const [contentModal, setContentModal] = useState(null);
 
   useEffect(() => {
+    if (query === "") return;
+
     const getPhoto = async () => {
       try {
         setError(false);
         setLoader(true);
-        const { results, total_pages } =
-          query !== ""
-            ? await requestToServer({ page: page, query: query })
-            : [];
 
-        setPhoto((prev) => (query !== "" ? [...prev, ...results] : []));
+        const { results, total, total_pages } = await requestToServer({
+          page: page,
+          query: query,
+        });
 
-        const lastPage = Math.ceil(total_pages / 10);
+        setPhotos((prev) => [...prev, ...results]);
 
-        if (lastPage === page) {
+        if (total_pages === page || total === 0) {
           setReachedLastPage(false);
           toast("we showed everything we could", {
             icon: "🐼",
@@ -40,6 +41,8 @@ const App = () => {
         }
       } catch (error) {
         setError(true);
+        setPhotos([]);
+        setReachedLastPage(false);
       } finally {
         setLoader(false);
       }
@@ -54,14 +57,9 @@ const App = () => {
       });
     }
     setPage(1);
-    setPhoto([]);
-    setQuery("");
+    setPhotos([]);
     setReachedLastPage(true);
     setQuery(topic);
-    if (photos.length !== 0) {
-      return setPage(0);
-    }
-    setPage(1);
   };
 
   const handleClick = () => {
