@@ -10,7 +10,7 @@ import ImageModal from "./ImageModal/ImageModal";
 
 const App = () => {
   const [photos, setPhoto] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
@@ -58,9 +58,9 @@ const App = () => {
     setReachedLastPage(true);
     setQuery(topic);
     if (photos.length === 0) {
-      return setPage(1);
+      return setPage(0);
     }
-    setPage(0);
+    setPage(1);
   };
 
   const handleClick = () => {
