@@ -53,6 +53,7 @@ const App = () => {
         icon: "🐼",
       });
     }
+    setPage(1);
     setPhoto([]);
     setQuery("");
     setReachedLastPage(true);
