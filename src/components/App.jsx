@@ -57,7 +57,7 @@ const App = () => {
     setQuery("");
     setReachedLastPage(true);
     setQuery(topic);
-    if (photos.length === 0) {
+    if (photos.length !== 0) {
       return setPage(0);
     }
     setPage(1);
